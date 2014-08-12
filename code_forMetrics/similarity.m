@@ -12,20 +12,8 @@ function score = similarity(saliencyMap1, saliencyMap2, toPlot)
 
 if nargin < 3, toPlot = 0; end
 
-[w, h, c] = size(saliencyMap2);
-
-% resize map1 and map2 to smaller size
-% longest edge is length 200px.
-if w > h
-    map1 = imresize(saliencyMap1, [200, NaN]);
-    map2 = imresize(saliencyMap2, [200, NaN]);
-else
-    map1 = imresize(saliencyMap1, [NaN, 200]);
-    map2 = imresize(saliencyMap2, [NaN, 200]);
-end
-
-map1 = im2double(map1);
-map2 = im2double(map2);
+map1 = im2double(imresize(saliencyMap1, size(saliencyMap2)));
+map2 = im2double(saliencyMap2);
 
 % normalize the values to be between 0-1
 if max(map1(:))==0 && min(map1(:))==0 % to avoid dividing by zero if zero image
