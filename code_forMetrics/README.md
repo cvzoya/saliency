@@ -1,1 +1,1 @@
-Code to compute the saliency metrics as used for benchmarking saliency models in http://saliency.mit.edu
+Code to compute the saliency metrics as used for benchmarking saliency models in http://saliency.mit.edu. Before using, please compile FastEMD from Ofir Pele.
