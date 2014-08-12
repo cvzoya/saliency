@@ -1,0 +1,75 @@
+===========================================================================
+ Matlab (and mex)
+===========================================================================
+Demos:
+ demo_FastEMD1.m
+ demo_FastEMD2.m
+ demo_FastEMD3.m
+ demo_FastEMD4/demo_FastEMD4.m
+ demo_FastEMD_non_symmetric.m
+ demo_FastEMD_non_equal_size_histograms.m
+ demo_FastEMD_compute.m
+ 
+Functions:
+ emd_hat_gd_metric_mex.m
+ emd_hat_mex.m
+ emd_hat_mex_nes.m
+
+Implementation stuff:
+ emd_hat_gd_metric_mex.cxx
+ emd_hat_mex.cxx
+ emd_hat_check_mex.hxx
+ emd_hat_compute_mex.hxx
+ 
+Installing:
+ compile_FastEMD.m
+===========================================================================
+
+===========================================================================
+ C++
+===========================================================================
+Demos:
+ demo_FastEMD.cpp
+
+Functions:
+ emd_hat.hpp
+ emd_hat_signatures_interface.hpp
+ 
+Implementation stuff:
+ flows_utils.hpp
+ emd_hat_impl.hpp
+ min_cost_flow.hpp
+ tictoc.hpp
+ EMD_DEFS.hpp
+ demo_FastEMD4/deltaE2000.hpp
+===========================================================================
+
+===========================================================================
+ Java
+===========================================================================
+See java/ folder
+===========================================================================
+
+===========================================================================
+ Input files
+===========================================================================
+ rice.txt
+ cameraman.txt
+ demo_FastEMD4/1.jpg
+ demo_FastEMD4/2a.jpg
+ demo_FastEMD4/2b.jpg
+===========================================================================
+
+===========================================================================
+ Other stuff
+===========================================================================
+ old_binaries/ - contains binaries of version 2.2 that do not support 
+                 non-symmetric non-equal sized histograms for vairous 
+                 operation systems.
+ Makefile
+ README.txt
+ LICENSE.txt
+ CHANGES.txt
+ DIRECTORY_LISTING.txt
+===========================================================================
+

@@ -1,0 +1,30 @@
+Version 1.1
+-----------
+Addition of compiled binaries.
+
+Version 2
+---------
+1. Changed "emd_hat_metric" to "emd_hat_gd_metric", as the only needed
+   condition for its usage is that the ground distance is a metric
+   (there is no need for alpha to be >=1/2, that is there is no need for
+   the resulting emd_hat to be a metric). 
+2. double support and change of C++ interface to templates structs
+   with operator().
+3. Functions now can return the flow.
+4. Java wrapper.
+5. Changes in demos, including the addition of demo_FastEMD4/ which
+   shows how to compare two not necessarily equal-size images using
+   state of the art color distance (ciede2000) and emd_hat.
+6. Fixed a bug in the signatures interface.
+
+Version 2.1
+-----------
+Changed license to BSD.
+
+Version 2.2
+-----------
+Added windows 64 version library compiled for the java interface (thanks to Erik Nooijen).
+
+Version 3
+---------
+Added version of non-symmetric ground distance and non-equal sized histograms/signatures.
