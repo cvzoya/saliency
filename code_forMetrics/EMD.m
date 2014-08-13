@@ -2,7 +2,6 @@
 % updated: Zoya Bylinskii, Aug 2014
 
 % This function is built off of FastEMD/demo_FastEMD3 demo.
-% Before using this function, compile FastEMD.
 % This demo loads two grayscale images and efficiently computes the emd_hat
 % between them in a similar to Peleg et al. paper: "A Unified Approach
 % to the Change of Resolution: Space and Gray-Level".
@@ -17,22 +16,19 @@
 %  Ofir Pele, Michael Werman
 %  ICCV 2009
 
-function score = EMD(saliencyMap1, saliencyMap2, toPlot)
-% saliencyMap1 and saliencyMap2 are 2 real-valued matrices
+function score = EMD(saliencyMap, fixationMap, toPlot)
+% saliencyMap is the saliency map
+% fixationMap is the human fixation map
 % if toPlot=1, displays output of EMD processing
 
 if nargin < 3, toPlot = 0; end
 
-% im1 and im2 may come in as doubles or uint8!
-im1 = imresize(saliencyMap2, 1/32);
-im2 = imresize(saliencyMap1, 1/32);
-R= size(im1,1);
-C= size(im1,2);
-if (~(size(im2,1)==R&&size(im2,2)==C))
-    error('Size of images should be the same');
-end
+% reduce image size for efficiency of caluclations
+im1 = imresize(fixationMap, 1/32);
+im2 = imresize(saliencyMap, size(im1));
+[R,C]= size(im1);
 
-% histogramMatch the images so they have the same mass
+% histogram match the images so they have the same mass
 im2 = histMatchMaps(im1, im2);
 if size(find(isnan(im2)), 1)
     im2(isnan(im2))=0;
@@ -44,8 +40,6 @@ end
 % amount of mass / spread of fixations of the fixation map
 im1 = im1/sum(im1(:));
 im2 = im2/sum(im2(:));
-
-%[sum(im1(:)), sum(im2(:))] % The mass of earth in each image
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -69,17 +63,17 @@ end
 extra_mass_penalty= 0;
 flowType= int32(3);
 
-
 P = im1(:);
 Q = im2(:);
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 score = emd_hat_gd_metric_mex(P,Q,D,extra_mass_penalty);
 
 if toPlot
     figure(1)
-    subplot(221); imshow(saliencyMap2);
-    subplot(222); imshow(saliencyMap1);
+    subplot(221); imshow(fixationMap);
+    subplot(222); imshow(saliencyMap);
     subplot(223); imshow(im1, []); title(['EMD: ', num2str(score)])
     subplot(224); imshow(im2, []);
     
