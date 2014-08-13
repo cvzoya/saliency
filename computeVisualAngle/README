@@ -1,0 +1,48 @@
+This code has been written to make it easier to report visual angle in
+papers, and to ensure a standardized calculation is used.
+
+This code can take variable input (e.g. horizontal, vertical, or diagonal
+screen measurements in any units), and will calculate any number of 
+degrees of visual angle in pixels, as well as degrees of visual angle 
+spanned by the computer screen or an image. 
+
+The code is provided on: http://saliency.mit.edu/
+
+Two versions of the code are available for convenience: 
+(1) computeDegVisAngle takes in a variable-length input argument list
+(2) computeDegVisAngle_gui is a simple user interface
+
+Usage and input parameters are specified in the respective functions.
+
+Example usage of (1):
+>> computeDegVisAngle('diagonal','19.5 inch','distance','24 inch','hres',1280,'vres',1024)
+
+Example usage of (2):
+>> computeDegVisAngle_gui
+
+NOTE: if you provide the screen diagonal and resolution, then the screen
+height and width will be estimated under the assumption that the aspect
+ratio of the screen dimensions matches that of the set resolution. If
+these estimates look wrong, either:
+(1) you measured the monitor dimensions, instead of the screen dimensions
+(2) the screen resolution aspect ratio does not match the screen
+    dimensions
+(3) explicitely enter the screen height and width instead of the diagonal
+
+Common mistake: remember that the number of pixels per unit size of screen 
+or image is a linear function, but number of pixels per degree of visual 
+angle is NOT.
+
+Remember: when writing a paper, include enough information for visual 
+angle to be calculated - providing screen resolution without screen 
+dimensions or vice versa is insufficient! Also, remember to measure the
+screen itself, rather than the whole monitor.
+
+
+
+Zoya Bylinskii, Aug 2014
+
+
+Resources used: http://osdoc.cogsci.nl/miscellaneous/visual-angle/, 
+                http://en.wikipedia.org/wiki/Visual_angle
+Thank you to Lavanya Sharan and Melissa Vo for helpful discussion.
