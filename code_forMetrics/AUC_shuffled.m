@@ -6,9 +6,9 @@
 
 % ROC curve created by sweeping through threshold values at fixed step size 
 % until the maximum saliency map value;
-% true positives (tp) correspond to the ratio of saliency map values above 
+% true positive (tp) rate correspond to the ratio of saliency map values above 
 % threshold at fixation locations to the total number of fixation locations
-% false positives (fp) correspond to the ratio of saliency map values above 
+% false positive (fp) rate correspond to the ratio of saliency map values above 
 % threshold at random locations to the total number of random locations 
 % (as many random locations as fixations, sampled uniformly from 
 % fixationMap ON OTHER IMAGES), averaging over Nsplits number of selections of

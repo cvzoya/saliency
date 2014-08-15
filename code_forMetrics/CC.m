@@ -1,10 +1,11 @@
 % created: Zoya Bylinskii, Aug 2014
 
-% This finds the correlation between two different saliency maps.
+% This finds the linear correlation coefficient between two different 
+% saliency maps (also called Pearson's linear coefficient).
 % score=1 or -1 means the maps are correlated
 % score=0 means the maps are completely uncorrelated
 
-function score = crossCorrelation(saliencyMap1, saliencyMap2)
+function score = CC(saliencyMap1, saliencyMap2)
 % saliencyMap1 and saliencyMap2 are 2 real-valued matrices
 
 map1 = im2double(imresize(saliencyMap1, size(saliencyMap2)));
