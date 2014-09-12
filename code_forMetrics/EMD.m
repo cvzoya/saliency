@@ -23,17 +23,10 @@ function score = EMD(saliencyMap, fixationMap, toPlot)
 
 if nargin < 3, toPlot = 0; end
 
-% reduce image size for efficiency of caluclations
+% reduce image size for efficiency of calculations
 im1 = imresize(fixationMap, 1/32);
 im2 = imresize(saliencyMap, size(im1));
 [R,C]= size(im1);
-
-% histogram match the images so they have the same mass
-im2 = histMatchMaps(im1, im2);
-if size(find(isnan(im2)), 1)
-    im2(isnan(im2))=0;
-    display('Warning, changing NaN to 0');
-end
 
 % Making sure mass sums to 1.
 % This normalizes the EMD so that the score is independent of the starting
