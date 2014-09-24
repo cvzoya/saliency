@@ -39,8 +39,8 @@ whichIms = 1:60; % which images to optimize on, from the STIMULI folder
                             % to save time and computation, can only use subset    
 
 metrics = {'S','ROC','ROC_borji','sROC_borji','CC','NSS','EMD'};
-metricNames = {'Similarity','AUC (Judd)',...
-                          'AUC (Borji)','shuffled AUC','Cross-correlation',...
+metricNames = {'Similarity','AUC-1',...
+                          'AUC-2','shuffled AUC','Cross-correlation',...
                           'Normalized Scanpath Saliency','Earth Mover Distance'};
 metricOpt = [1,1,1,1,1,1,-1];
 % optimal value per metric is either the maximum (1) or the minimum (-1)
@@ -75,6 +75,7 @@ end
 % performance numbers without without saving
 % maps.
 
+if 0
 % initialize empty directories
 fprintf('Creating folders of varying blur and center.\n')
 for s = 1:nsigmas
@@ -106,17 +107,39 @@ parfor i = whichIms %can optimize all files or only a subset
             % directory for image files
             curdir = fullfile(resDir,sprintf('center%d_blur%d',w,s));
             
-            map = processMap(mapOrig,cent,targetHist,sigmaVals(s),centVals(w));
+            if showOutput, subplot(131); imshow(mapOrig); title('Original'); end
+
+            % first blur map
+            if sigmaVals(s)==0
+                map = mapOrig;
+            else
+                gf = fspecial('gaussian', sigmaVals(s)*10, sigmaVals(s));
+                map = imfilter(mapOrig,gf,'symmetric');
+            end
+
+            % then apply center bias
+            map = (map-min(map(:)))/(max(map(:))-min(map(:)));
+            map = centVals(w)*cent + (1-centVals(w))*map;
+            if showOutput, subplot(132); imshow(map); title('Blurred and centered'); end
             
+            % then histogram match map
+            map = histoMatch(map, targetHist.counts, targetHist.bins); 
+            if showOutput, subplot(133); imshow(map); title('Histogram matched'); end
+
             % save result
-            imwrite(map, fullfile(curdir, files(i).name));
+            savefile = fullfile(curdir, files(i).name);
+            map = uint8(map*255);
+            imwrite(map, savefile);
             
+            %pause;
         end
+        
         
     end
 
     fprintf('\n')
     
+end
 end
 
 %% Test and record performance of each folder (different blur, center values)
@@ -126,7 +149,7 @@ paramsSaveFile = fullfile(resDir, 'params.mat');
 if exist(paramsSaveFile,'file')
     load(paramsSaveFile);
 end
-
+if 0
 folders = dir(fullfile(resDir, 'center*'));
 
 fprintf('Evaluating performance of each folder.\n')
@@ -159,13 +182,12 @@ for ii = length(metrics); %1:length(metrics)
     end
     
 end
-
+end
 %% Replace this with your own code to choose optimal blur, center weight parameters
 
-% this code chooses the best parameters for ROC,
-% and prints out the best performance PER METRIC; 
-% you may like to combine all this information to
-% choose a single optimal set of parameters.
+% this code chooses the best parameters and prints out the best
+% performance PER METRIC; you may like to combine all this information to
+% choose a single optimal set of parameters
 
 fprintf('Selecting optimal parameters.\n')
 
@@ -197,7 +219,7 @@ for ii =1:length(metrics)
         optBlurParam = sigmaVals(blur);
         scores = params.(metric).scores(center,blur,:);
         fprintf('Optimal center weight = %2.2f, blur radius = %2.2f\n',optCenterParam,optBlurParam)
-        fprintf('%s performance improves from %2.2f to %2.2f\n',metricName,mean(origPerf),bestVal)
+        fprintf('%s performance improves from %2.2f to %2.2f\n\n',metricName,mean(origPerf),bestVal)
     end
     
     params.(metric).optCenterParam = optCenterParam;
