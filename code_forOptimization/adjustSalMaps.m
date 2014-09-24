@@ -25,18 +25,16 @@ else
     mkdir(resDir)
 end
 
-allfiles = dir(salDir);
+allfiles = dir(fullfile(salDir,'*.jpg'));
 
 if showOutput, figure; end
 
 for i = 1:length(allfiles)
-    if ~isdir(allfiles(i).name)
         
-        fprintf('On %s\n',allfiles(i).name)
-        mapOrig = im2double(imread(fullfile(salDir,allfiles(i).name)));
-        cent = imresize(center, size(mapOrig));
-        map = processMap(mapOrig,cent,targetHist,blurSigma,centWeight,showOutput);
-        imwrite(map,fullfile(resDir,allfiles(i).name));
+    fprintf('On %s\n',allfiles(i).name)
+    mapOrig = im2double(imread(fullfile(salDir,allfiles(i).name)));
+    cent = imresize(center, size(mapOrig));
+    map = processMap(mapOrig,cent,targetHist,blurSigma,centWeight,showOutput);
+    imwrite(map,fullfile(resDir,allfiles(i).name));
 
-    end
 end
