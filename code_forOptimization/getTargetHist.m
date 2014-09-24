@@ -17,9 +17,14 @@ function targetHist = getTargetHist(FIXATIONMAPS)
 % number of bins for histogram
 nbins = 256;
 
-imfiles = dir(fullfile(FIXATIONMAPS,'*.jpeg'));
+imfiles = dir(fullfile(FIXATIONMAPS,'*.jpg'));
+
+if isempty(imfiles)
+    error('Could not find .jpg files in %s.\n',FIXATIONMAPS);
+end
+
 avghist = zeros(nbins,1);
-for i = 1:length(imfiles)
+for i = 1:100%length(imfiles)
     fixMap = im2double(imread(fullfile(FIXATIONMAPS, imfiles(i).name)));
     [h,x] = imhist(fixMap,nbins);
     avghist = avghist+h;

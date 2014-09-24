@@ -30,7 +30,7 @@ resDir_ICCV = 'where_to_put_all_centered_and_blurred_ICCV_maps';
 resDir_benchmark = 'where_to_put_adjusted_benchmark_maps';
 
 %% (2) compute an average human fixation histogram 
-FIXATIONMAPS =fullfile(mainpath,'ParameterTrainingOnICCV/FIXATIONMAPS');
+FIXATIONMAPS =fullfile(mainpath,'ParameterTrainingOnICCV/ICCVdata/ALLFIXATIONMAPSICCV');
 targetHist = getTargetHist(FIXATIONMAPS);
 
 %% (3) choose best center weight and blur values on ICCV dataset
