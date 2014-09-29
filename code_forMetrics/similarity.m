@@ -15,27 +15,20 @@ if nargin < 3, toPlot = 0; end
 map1 = im2double(imresize(saliencyMap1, size(saliencyMap2)));
 map2 = im2double(saliencyMap2);
 
-% normalize the values to be between 0-1
-if max(map1(:))==0 && min(map1(:))==0 % to avoid dividing by zero if zero image
-    map1(100, 100)=1;
-else
+% (1) first normalize the map values to lie between 0-1
+% this is done so that models that assign a nonzero
+% value to every pixel do not get an artificial performance boost
+% (2) then make sure that the map is normalized to sum to 1
+% so that the maximum value of score will be 1
+if any(map1(:)) % zero map will remain a zero map
     map1= (map1-min(map1(:)))/(max(map1(:))-min(map1(:)));
+    map1 = map1/sum(map1(:));
 end
 
-if max(map2(:))==0 && min(map2(:))==0
-    map2(100, 100)=1; % if uniform map, plot central fixation
-else
+if any(map2(:)) % zero map will remain a zero map
     map2= (map2-min(map2(:)))/(max(map2(:))-min(map2(:)));
+    map2 = map2/sum(map2(:));
 end
-
-% make sure map1 and map2 sum to 1
-map1 = map1/sum(map1(:));
-map2 = map2/sum(map2(:));
-
-assert(min(map1(:))>=0)
-assert(min(map2(:))>=0)
-assert(abs(1-sum(map1(:)))<0.001)
-assert(abs(1-sum(map2(:)))<0.001)
 
 % compute histogram intersection
 diff = min(map1, map2);
