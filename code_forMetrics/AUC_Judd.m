@@ -41,7 +41,7 @@ end
 % in the small values!
 if jitter
     % jitter the saliency map slightly to distrupt ties of the same numbers
-    saliencyMap = saliencyMap+rand(size(saliencyMap))/10000000;
+    saliencyMap = double(saliencyMap)+rand(size(saliencyMap))/10000000;
 end
 
 % normalize saliency map
