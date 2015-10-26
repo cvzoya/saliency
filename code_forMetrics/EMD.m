@@ -52,11 +52,11 @@ for c1=1:C
     end
 end
 
-extra_mass_penalty= 0;
-flowType= int32(3);
+extra_mass_penalty= double(0);
+flowType= double(3);
 
-P = im1(:);
-Q = im2(:);
+P = double(im1(:));
+Q = double(im2(:));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
