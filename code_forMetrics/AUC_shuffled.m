@@ -65,7 +65,7 @@ for s = 1:Nsplits
     
     curfix = randfix(:,s);
     
-    allthreshes = fliplr([0:stepSize:max([Sth;curfix])]);
+    allthreshes = fliplr([0:stepSize:double(max([Sth;curfix]))]);
     tp = zeros(length(allthreshes)+2,1);
     fp = zeros(length(allthreshes)+2,1);
     tp(1)=0; tp(end) = 1; 
