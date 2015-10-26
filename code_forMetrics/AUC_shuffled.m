@@ -47,16 +47,18 @@ F = fixationMap(:);
 Oth = otherMap(:);
 
 Sth = S(F>0); % sal map values at fixation locations
+SOth = S(Oth>0); % sal map values at fixation locations of other random images
 Nfixations = length(Sth);
+Nfixations_Oth = length(SOth);
 
 % for each fixation, sample Nsplits values from the sal map at locations
 % specified by otherMap
 
-randfix = nan(Nfixations,Nsplits);
+randfix = nan(Nfixations_Oth,Nsplits);
 ind = find(Oth>0); % find fixation locations on other images
 for i=1:Nsplits
     randind = ind(randperm(length(ind))); % randomize choice of fixation locations
-    randfix(:,i) = S(randind(1:Nfixations)); % sal map values at random fixation locations of other random images
+    randfix(:,i) = S(randind(1:Nfixations_Oth)); % sal map values at random fixation locations of other random images
 end
 
 % calculate AUC per random split (set of random locations)
@@ -74,7 +76,7 @@ for s = 1:Nsplits
     for i = 1:length(allthreshes)
         thresh = allthreshes(i);
         tp(i+1) = sum((Sth >= thresh))/Nfixations;
-        fp(i+1) = sum((curfix >= thresh))/Nfixations;
+        fp(i+1) = sum((curfix >= thresh))/Nfixations_Oth;
     end
 
     auc(s) = trapz(fp,tp);
