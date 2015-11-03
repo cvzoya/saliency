@@ -14,7 +14,7 @@
 % fixationMap ON OTHER IMAGES), averaging over Nsplits number of selections of
 % random locations.
 
-function score = AUC_shuffled(saliencyMap, fixationMap, otherMap, Nsplits, stepSize, toPlot)
+function [score,tp,fp] = AUC_shuffled(saliencyMap, fixationMap, otherMap, Nsplits, stepSize, toPlot)
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map (binary matrix)
 % otherMap is a binary fixation map (like fixationMap) by taking the union of
@@ -27,9 +27,10 @@ if nargin < 6, toPlot = 0; end
 if nargin < 5, stepSize = .1; end
 if nargin < 4, Nsplits = 100; end
 
+score=nan;
+
 % If there are no fixations to predict, return NaN
 if ~any(fixationMap)
-    score=NaN;
     disp('no fixationMap');
     return
 end 
@@ -41,6 +42,11 @@ end
 
 % normalize saliency map
 saliencyMap = (saliencyMap-min(saliencyMap(:)))/(max(saliencyMap(:))-min(saliencyMap(:)));
+
+if sum(isnan(saliencyMap(:)))==length(saliencyMap(:))
+    disp('NaN saliencyMap');
+    return
+end
 
 S = saliencyMap(:);
 F = fixationMap(:);
