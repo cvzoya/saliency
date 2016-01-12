@@ -131,7 +131,7 @@ folders = dir(fullfile(resDir, 'center*'));
 
 fprintf('Evaluating performance of each folder.\n')
 
-for ii = length(metrics); %1:length(metrics) 
+for ii = 1:length(metrics) 
     
     metric = metrics{ii};
     params.(metric).S= nan(ncents,nsigmas);
