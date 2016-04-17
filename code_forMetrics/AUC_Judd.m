@@ -21,10 +21,10 @@ function [score,tp,fp,allthreshes] = AUC_Judd(saliencyMap, fixationMap, jitter, 
 
 if nargin < 4, toPlot = 0; end
 if nargin < 3, jitter = 1; end
+score = nan;
 
 % If there are no fixations to predict, return NaN
 if ~any(fixationMap)
-    score=NaN;
     disp('no fixationMap');
     return
 end 
@@ -46,6 +46,11 @@ end
 
 % normalize saliency map
 saliencyMap = (saliencyMap-min(saliencyMap(:)))/(max(saliencyMap(:))-min(saliencyMap(:)));
+
+if sum(isnan(saliencyMap(:)))==length(saliencyMap(:))
+    disp('NaN saliencyMap');
+    return
+end
 
 S = saliencyMap(:);
 F = fixationMap(:);

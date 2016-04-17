@@ -14,7 +14,7 @@
 % ALL IMAGE PIXELS), averaging over Nsplits number of selections of
 % random locations.
 
-function score = AUC_Borji(saliencyMap, fixationMap, Nsplits, stepSize, toPlot)
+function [score,tp,fp] = AUC_Borji(saliencyMap, fixationMap, Nsplits, stepSize, toPlot)
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map (binary matrix)
 % Nsplits is number of random splits
@@ -25,9 +25,11 @@ if nargin < 5, toPlot = 0; end
 if nargin < 4, stepSize = .1; end
 if nargin < 3, Nsplits = 100; end
 
+score=nan;
+
 % If there are no fixations to predict, return NaN
-if ~any(fixationMap)
-    score=NaN;
+if sum(fixationMap(:)>0)<=1
+    score=nan;
     disp('no fixationMap');
     return
 end 
@@ -39,6 +41,11 @@ end
 
 % normalize saliency map
 saliencyMap = (saliencyMap-min(saliencyMap(:)))/(max(saliencyMap(:))-min(saliencyMap(:)));
+
+if sum(isnan(saliencyMap(:)))==length(saliencyMap(:))
+    disp('NaN saliencyMap');
+    return
+end
 
 S = saliencyMap(:);
 F = fixationMap(:);
@@ -57,7 +64,7 @@ for s = 1:Nsplits
     
     curfix = randfix(:,s);
     
-    allthreshes = fliplr([0:stepSize:max([Sth;curfix])]);
+    allthreshes = fliplr([0:stepSize:double(max([Sth;curfix]))]);
     tp = zeros(length(allthreshes)+2,1);
     fp = zeros(length(allthreshes)+2,1);
     tp(1)=0; tp(end) = 1; 

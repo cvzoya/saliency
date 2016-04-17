@@ -7,7 +7,7 @@
 function score = NSS(saliencyMap, fixationMap)
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map (binary matrix)
-map = imresize(saliencyMap,size(fixationMap));
+map = double(imresize(saliencyMap,size(fixationMap)));
 
 % normalize saliency map
 map = (map - mean(map(:)))/std(map(:)); 

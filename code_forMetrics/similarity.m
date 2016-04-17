@@ -30,6 +30,11 @@ if any(map2(:)) % zero map will remain a zero map
     map2 = map2/sum(map2(:));
 end
 
+score = nan;
+if sum(isnan(map1(:)))==length(map1(:)) || sum(isnan(map2(:)))==length(map2(:))
+    return;
+end
+
 % compute histogram intersection
 diff = min(map1, map2);
 score = sum(diff(:));

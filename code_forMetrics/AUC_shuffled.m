@@ -14,7 +14,7 @@
 % fixationMap ON OTHER IMAGES), averaging over Nsplits number of selections of
 % random locations.
 
-function score = AUC_shuffled(saliencyMap, fixationMap, otherMap, Nsplits, stepSize, toPlot)
+function [score,tp,fp] = AUC_shuffled(saliencyMap, fixationMap, otherMap, Nsplits, stepSize, toPlot)
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map (binary matrix)
 % otherMap is a binary fixation map (like fixationMap) by taking the union of
@@ -27,9 +27,10 @@ if nargin < 6, toPlot = 0; end
 if nargin < 5, stepSize = .1; end
 if nargin < 4, Nsplits = 100; end
 
+score=nan;
+
 % If there are no fixations to predict, return NaN
 if ~any(fixationMap)
-    score=NaN;
     disp('no fixationMap');
     return
 end 
@@ -42,6 +43,11 @@ end
 % normalize saliency map
 saliencyMap = (saliencyMap-min(saliencyMap(:)))/(max(saliencyMap(:))-min(saliencyMap(:)));
 
+if sum(isnan(saliencyMap(:)))==length(saliencyMap(:))
+    disp('NaN saliencyMap');
+    return
+end
+
 S = saliencyMap(:);
 F = fixationMap(:);
 Oth = otherMap(:);
@@ -52,11 +58,14 @@ Nfixations = length(Sth);
 % for each fixation, sample Nsplits values from the sal map at locations
 % specified by otherMap
 
-randfix = nan(Nfixations,Nsplits);
 ind = find(Oth>0); % find fixation locations on other images
+
+Nfixations_oth = min(Nfixations,length(ind));
+randfix = nan(Nfixations_oth,Nsplits);
+
 for i=1:Nsplits
     randind = ind(randperm(length(ind))); % randomize choice of fixation locations
-    randfix(:,i) = S(randind(1:Nfixations)); % sal map values at random fixation locations of other random images
+    randfix(:,i) = S(randind(1:Nfixations_oth)); % sal map values at random fixation locations of other random images
 end
 
 % calculate AUC per random split (set of random locations)
@@ -65,7 +74,7 @@ for s = 1:Nsplits
     
     curfix = randfix(:,s);
     
-    allthreshes = fliplr([0:stepSize:max([Sth;curfix])]);
+    allthreshes = fliplr([0:stepSize:double(max([Sth;curfix]))]);
     tp = zeros(length(allthreshes)+2,1);
     fp = zeros(length(allthreshes)+2,1);
     tp(1)=0; tp(end) = 1; 
@@ -74,7 +83,7 @@ for s = 1:Nsplits
     for i = 1:length(allthreshes)
         thresh = allthreshes(i);
         tp(i+1) = sum((Sth >= thresh))/Nfixations;
-        fp(i+1) = sum((curfix >= thresh))/Nfixations;
+        fp(i+1) = sum((curfix >= thresh))/Nfixations_oth;
     end
 
     auc(s) = trapz(fp,tp);
