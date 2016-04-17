@@ -16,7 +16,7 @@
 %  Ofir Pele, Michael Werman
 %  ICCV 2009
 
-function [score,D,flowMat] = EMD(saliencyMap, fixationMap, toPlot)
+function [score,D] = EMD(saliencyMap, fixationMap, toPlot)
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map
 % if toPlot=1, displays output of EMD processing
@@ -60,7 +60,7 @@ Q = im2(:);
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-[score flowMat] = emd_hat_gd_metric_mex(P,Q,D,extra_mass_penalty);
+score = emd_hat_gd_metric_mex(P,Q,D,extra_mass_penalty);
 
 if toPlot
     figure(1)

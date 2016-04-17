@@ -12,7 +12,7 @@
 % threshold at all other locations to the total number of posible other
 % locations (non-fixated image pixels)
 
-function score = AUC_Judd(saliencyMap, fixationMap, jitter, toPlot)
+function [score,tp,fp,allthreshes] = AUC_Judd(saliencyMap, fixationMap, jitter, toPlot)
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map (binary matrix)
 % jitter = 1 will add tiny non-zero random constant to all map locations
@@ -68,6 +68,7 @@ for i = 1:Nfixations
 end 
 
 score = trapz(fp,tp);
+allthreshes = [1;allthreshes;0];
 
 if toPlot
     subplot(121); imshow(saliencyMap, []); title('SaliencyMap with fixations to be predicted');
