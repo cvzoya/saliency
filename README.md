@@ -8,4 +8,13 @@ If you use any of this code, please cite:
   howpublished = {http://saliency.mit.edu/}
 }
 </pre>
+
+<pre>
+@article{salMetrics_Bylinskii,
+    title    = {What do different evaluation metrics tell us about saliency models?},
+    author   = {Zoya Bylinskii and Tilke Judd and Aude Oliva and Antonio Torralba and Fr{\'e}do Durand},
+    journal  = {arXiv preprint arXiv:1604.03605},
+    year     = {2016}
+}
+</pre>
  
