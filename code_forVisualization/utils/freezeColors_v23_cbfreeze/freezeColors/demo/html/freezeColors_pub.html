@@ -1,0 +1,168 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN">
+<html xmlns:mwsh="http://www.mathworks.com/namespace/mcode/v1/syntaxhighlight.dtd">
+   <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   
+      <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      -->
+      <title>Demonstration of freezeColors / unfreezeColors</title>
+      <meta name="generator" content="MATLAB 7.4">
+      <meta name="date" content="2007-04-13">
+      <meta name="m-file" content="freezeColors_pub"><style>
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head>
+   <body>
+      <div class="content">
+         <h1>Demonstration of freezeColors / unfreezeColors</h1>
+         <introduction>
+            <p><tt><b>freezeColors</b></tt> enables you to use multiple colormaps in a single figure.
+            </p>
+            <p>John Iversen (<a href="mailto:iversen@nsi.edu">iversen@nsi.edu</a>)
+            </p>
+            <p><img vspace="5" hspace="5" src="freezeColors_pub.png"> </p>
+         </introduction>
+         <h2>Contents</h2>
+         <div>
+            <ul>
+               <li><a href="#1">Problem:  In MATLAB there is only one colormap per figure.</a></li>
+               <li><a href="#2">Solution:  freezeColors</a></li>
+               <li><a href="#3">Usage</a></li>
+               <li><a href="#4">Demonstration:  Plot a variety of objects using different colormaps in one figure.</a></li>
+               <li><a href="#5">unfreezeColors undoes the effects of freezeColors.</a></li>
+               <li><a href="#6">More information</a></li>
+               <li><a href="#7">Credits</a></li>
+            </ul>
+         </div>
+         <h2>Problem:  In MATLAB there is only one colormap per figure.<a name="1"></a></h2>
+         <h2>Solution:  freezeColors<a name="2"></a></h2>
+         <p><tt><b>freezeColors</b></tt> provides an easy solution to create plots using different colormaps in the same figure.
+         </p>
+         <p><tt><b>freezeColors</b></tt> will freeze the colors of graphics objects in the current axis so that later changes to the colormap (or caxis) will not
+            change the colors of these objects. Then, a new colormap can be applied to the next plot without changing the appearance of
+            the first axis. The original, indexed, color data is saved, and can be restored using <tt><b>unfreezeColors</b></tt>, making objects one again subject to change with the colormap.
+         </p>
+         <p><tt><b>freezeColors</b></tt> / <tt><b>unfreezeColors</b></tt> work on images, surfaces, scattergroups, bargroups, patches, etc. (Any object with CData in indexed-color mode).
+         </p>
+         <h2>Usage<a name="3"></a></h2>
+         <p>The basic way to do this is to follow each plot with a call to <tt><b>freezeColors</b></tt>, e.g.
+         </p>
+         <p><tt>subplot(2,1,1); imagesc(peaks); colormap hot; freezeColors</tt></p>
+         <p><tt>subplot(2,1,2); imagesc(peaks); colormap jet; freezeColors</tt>, etc...
+         </p>
+         <p>colorbars may be frozen using <tt>colorbar; cbfreeze</tt></p>
+         <p><tt><b>freezeColors</b></tt> freezes colors of all indexed-color objects in current axis. <tt><b>freezeColors(axh)</b></tt> does the same, but for objects in axis <tt>axh</tt>.
+         </p>
+         <p><tt><b>unfreezeColors</b></tt> works similarly, but unfreezes colors, restoring objects to their original state, once again subject to the colormap and
+            caxis.
+         </p>
+         <p><tt><b>cbfreeze</b></tt> is by Carlos Adrian Vargas Aguilera and must be downloaded separately from the fileexchange <a href="http://www.mathworks.com/matlabcentral/fileexchange/24371">here</a>.
+         </p>
+         <h2>Demonstration:  Plot a variety of objects using different colormaps in one figure.<a name="4"></a></h2>
+         <p>Below, you will see plots using different colormaps on the same figure. Hooray! Note how after each plot, <tt><b>freezeColors</b></tt> is called, making the plot immune to subsequent changes in colormap used to affect the appearance of the next plot.
+         </p>
+         <p>The figure demonstrates the range of plots that can be used with <tt><b>freezeColors</b></tt>: images (imagesc, pcolor), surfaces (surf and surfl), scatter plots, bar plots, indeed any plot object that has CData.
+         </p><pre class="codeinput">figure; set(gcf,<span class="string">'color'</span>,[1 1 1])
+
+<span class="comment">% image, colormap JET</span>
+subplot(3,2,1); imagesc(peaks); axis <span class="string">xy</span>; colormap <span class="string">jet</span>; title(<span class="string">'imagesc, jet'</span>);
+    freezeColors            <span class="comment">%freeze colors of current plot</span>
+    colorbar; cbfreeze      <span class="comment">%how to freeze a colorbar</span>
+
+<span class="comment">% same image, using colormap HOT</span>
+subplot(3,2,2); imagesc(peaks); axis <span class="string">xy</span>; title(<span class="string">'imagesc, hot'</span>);
+    colormap <span class="string">hot</span>            <span class="comment">%now, changing the colormap affects ONLY the current axis!</span>
+    freezeColors
+    colorbar; cbfreeze
+
+<span class="comment">% surface</span>
+subplot(3,2,3); surf(peaks); shading <span class="string">interp</span>; colormap <span class="string">hsv</span>; title(<span class="string">'surf, hsv'</span>);
+    freezeColors; colorbar; cbfreeze
+
+<span class="comment">% lighted surface, with hole showing nan transparency is preserved after freezing</span>
+pnan = peaks; pnan(4:8,end-7:end-3) = nan; <span class="comment">% make a small transparent patch</span>
+subplot(3,2,4); surfl(pnan); shading <span class="string">interp</span>; colormap <span class="string">hot</span>; title(<span class="string">'surfl with NaNs, hot'</span>);
+    freezeColors; colorbar; cbfreeze
+
+<span class="comment">% scatter plot and bar plot</span>
+subplot(3,2,5); scatter(randn(100,1),randn(100,1),rand(100,1)*100,rand(100,1),<span class="string">'filled'</span>);
+    title(<span class="string">'scatter, cool'</span>); colormap <span class="string">cool</span>; axis(3*[-1 1 -1 1]);
+    freezeColors; colorbar; cbfreeze
+
+subplot(3,2,6); bar(randn(4,3));xlim([0 5]);title(<span class="string">'bar, copper'</span>); colormap <span class="string">copper</span>;
+    freezeColors;
+</pre><img vspace="5" hspace="5" src="freezeColors_pub_01.png"> <h2>unfreezeColors undoes the effects of freezeColors.<a name="5"></a></h2>
+         <p>While it is used less often, with <tt><b>unfreezeColors</b></tt> it is possible to restore a plot to its original state, meaning that it will now be subject to the current colormap. (The
+            original color data was stored when <tt>freezeColors</tt> was first called.
+         </p>
+         <p>Demo:  If we change the colormap, then unfreeze the entire figure, all the plots will use the same colormap. This is Matlab's
+            standard, dreary behavior of one colormap per figure.
+         </p><pre class="codeinput">colormap <span class="string">gray</span>
+unfreezeColors(gcf) <span class="comment">%unfreeze entire figure</span>
+cbfreeze(<span class="string">'off'</span>) <span class="comment">%unfreeze all colorbars</span>
+</pre><img vspace="5" hspace="5" src="freezeColors_pub_02.png"> <h2>More information<a name="6"></a></h2><pre>help freezeColors
+help unfreezeColors</pre><h2>Credits<a name="7"></a></h2>
+         <p>Free for all uses, but please retain the following:</p><pre>Original Author:
+John Iversen, 2005-10
+john_iversen@post.harvard.edu</pre><pre>3/23/05</pre><p class="footer"><br>
+            Published with MATLAB&reg; 7.4<br></p>
+      </div>
+   </body>
+</html>
