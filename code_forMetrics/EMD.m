@@ -16,7 +16,11 @@
 %  Ofir Pele, Michael Werman
 %  ICCV 2009
 
+<<<<<<< HEAD
+function [score,D,flowMat] = EMD(saliencyMap, fixationMap, toPlot)
+=======
 function [score,D,flowMat] = EMD(saliencyMap, fixationMap, toPlot, downsize)
+>>>>>>> 39ac56d4af3b6bf75e1305aeb683e04e21f77fec
 % saliencyMap is the saliency map
 % fixationMap is the human fixation map
 % if toPlot=1, displays output of EMD processing
