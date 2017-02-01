@@ -29,8 +29,8 @@ if nargin < 3, toPlot = 0; end
 if nargin < 4, downsize = 32; end
 
 % reduce image size for efficiency of calculations
-im1 = imresize(fixationMap, 1/downsize);
-im2 = imresize(saliencyMap, size(im1));
+im1 = double(imresize(fixationMap, 1/downsize));
+im2 = double(imresize(saliencyMap, size(im1)));
 [R,C]= size(im1);
 
 % Making sure mass sums to 1.
