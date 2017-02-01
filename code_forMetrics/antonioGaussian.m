@@ -1,4 +1,4 @@
-function [BF, gf]=gaussian(img, fc)
+function [BF, gf]=antonioGaussian(img, fc)
 % Gaussian low pass filter (with circular boundary conditions).
 % 
 %  [BF, gf]=gaussian(img, fc);
@@ -47,7 +47,7 @@ s=round(n2/n) * fc/sqrt(log(2)); %re-scaled to padded image dimensions
 % compute transfer function of gaussian filter:
 gf=exp(-(fx.^2+fy.^2)/(s^2));
 
-gf2 = zeros(n2,n2,c); gf2(n+1:n2-n,n+1:n2-n,:) = gf;
+gf2 = zeros(n2,n2,c); gf2(n2/2-n/2+1:n2/2+n/2,n2/2-n/2+1:n2/2+n/2,:) = gf;
 gf2 = fftshift(gf2);
 
 
@@ -73,6 +73,7 @@ if nargout==0
    xlabel('cycles per image')
    ylabel('amplitude transfer function')
 end
+end
 
 
 function [Ipad] = zeropadimage(I,p)
@@ -81,23 +82,10 @@ function [Ipad] = zeropadimage(I,p)
 [h, w] = size(I); 
 
 %Pad edges
-Ipad = zeros(h+2*p, w+2*p);  
+Ipad = zeros(2*p, 2*p);  
 
 %Middle
 Ipad(p+1:p+h, p+1:p+w) = I;
 
-%Top and Bottom
-Ipad(1:p, p+1:p+w) = repmat(I(1,1:end), p, 1);
-Ipad(p+h+1:end, p+1:p+w) = repmat(I(end,1:end), p, 1); 
-
-%Left and Right
-Ipad(p+1:p+h, 1:p) = repmat(I(1:end,1), 1, p);
-Ipad(p+1:p+h, p+w+1:end) = repmat(I(1:end,end), 1, p); 
-
-%Corners
-Ipad(1:p, 1:p) = I(1,1); %Top-left
-Ipad(1:p, p+w+1:end) = I(1,end); %Top-right
-Ipad(p+h+1:end, 1:p) = I(end,1); %Bottom-left
-Ipad(p+h+1:end,p+w+1:end) = I(end,end); %Bottom-right
-
 end
+
