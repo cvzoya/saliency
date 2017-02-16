@@ -26,6 +26,6 @@ if any(map3(:))
 end
 
 % compute IG
-score = mean(mean(map2 .* (log2(eps + map1) - log2(eps+map3))));
+score = mean(nonzeros(map2 .* (log2(eps + map1) - log2(eps+map3))));
 map = map2 .* (log2(eps + map1) - log2(eps+map3));
 
