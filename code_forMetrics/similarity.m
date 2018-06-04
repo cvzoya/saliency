@@ -44,6 +44,6 @@ if toPlot
     subplot(131); imshow(map1, []);
     subplot(132); imshow(map2, []);
     subplot(133); imshow(diff, []);
-    title(['Similar parts = ', num2str(s)]);
+    title(['Similar parts = ', num2str(score)]);
     pause;
 end
